@@ -1375,37 +1375,84 @@
       100% { top: -60%; }
     }
 
-    /* Section divider animated lines */
+    /* Section divider - electric lightning bolt */
     .section-divider {
       width: 100%;
-      height: 1px;
+      height: 40px;
       margin: 32px 0;
       position: relative;
       overflow: visible;
     }
 
-    .section-divider::before {
-      content: '';
+    .section-divider .bolt-svg {
       position: absolute;
       top: 0; left: 0;
-      width: 100%; height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(113, 83, 255, 0.4), rgba(36, 215, 255, 0.3), transparent);
+      width: 100%;
+      height: 100%;
+      overflow: visible;
     }
 
-    .section-divider::after {
-      content: '';
-      position: absolute;
-      top: -3px;
-      width: 80px; height: 7px;
-      background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
-      border-radius: 4px;
-      animation: dividerSlide 4s ease-in-out infinite;
-      filter: blur(2px);
+    .section-divider .bolt-main {
+      filter: url(#bolt-glow);
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
 
-    @keyframes dividerSlide {
-      0% { left: -80px; }
-      100% { left: calc(100% + 80px); }
+    /* Glow trail behind the bolt */
+    .section-divider .bolt-trail {
+      stroke: rgba(36, 215, 255, 0.15);
+      stroke-width: 6;
+      filter: blur(4px);
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* Secondary smaller bolts */
+    .section-divider .bolt-branch {
+      stroke-width: 1;
+      filter: url(#bolt-glow);
+      stroke-linecap: round;
+    }
+
+    /* SVG bolt reveal via stroke-dashoffset */
+    .section-divider .bolt-main {
+      stroke-dasharray: 2000;
+      stroke-dashoffset: 2000;
+      animation: boltReveal 3s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+    }
+
+    .section-divider .bolt-branch {
+      animation: boltReveal 3s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+      animation-delay: 0.15s;
+      stroke-dasharray: 500;
+      stroke-dashoffset: 500;
+    }
+
+    @keyframes boltReveal {
+      0%   { stroke-dashoffset: 2000; opacity: 0; }
+      5%   { opacity: 1; }
+      40%  { stroke-dashoffset: 0; opacity: 1; }
+      60%  { stroke-dashoffset: 0; opacity: 1; }
+      100% { stroke-dashoffset: -2000; opacity: 0; }
+    }
+
+    /* Flicker effect on the entire bolt */
+    .section-divider .bolt-flicker {
+      animation: boltFlicker 3s ease-in-out infinite;
+    }
+
+    @keyframes boltFlicker {
+      0%, 100% { opacity: 0.5; }
+      10% { opacity: 1; }
+      12% { opacity: 0.3; }
+      14% { opacity: 1; }
+      30% { opacity: 0.8; }
+      32% { opacity: 1; }
+      50% { opacity: 0.6; }
+      52% { opacity: 1; }
+      70% { opacity: 0.9; }
+      72% { opacity: 0.4; }
+      74% { opacity: 1; }
     }
 
     /* Radar pulse on step numbers */
@@ -2021,7 +2068,47 @@
       </div>
     </section>
 
-    <div class="section-divider"></div>
+    <div class="section-divider">
+      <svg class="bolt-svg" viewBox="0 0 1200 40" preserveAspectRatio="none">
+        <defs>
+          <filter id="bolt-glow" x="-20%" y="-100%" width="140%" height="300%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <!-- glow trail -->
+        <polyline class="bolt-trail bolt-flicker" points="0,20 80,22 120,18 200,24 280,16 360,22 440,19 520,25 600,17 680,23 760,20 840,18 920,24 1000,16 1080,21 1160,19 1200,20" fill="none"/>
+        <!-- main bolt path -->
+        <polyline class="bolt-main" points="0,20 80,22 120,18 200,24 280,16 360,22 440,19 520,25 600,17 680,23 760,20 840,18 920,24 1000,16 1080,21 1160,19 1200,20" fill="none" stroke="url(#boltGrad)" stroke-width="2"/>
+        <!-- branches -->
+        <polyline class="bolt-branch" points="120,18 135,8 148,16" fill="none" stroke="rgba(36,215,255,0.7)"/>
+        <polyline class="bolt-branch" points="200,24 220,12 240,20" fill="none" stroke="rgba(36,215,255,0.7)"/>
+        <polyline class="bolt-branch" points="280,16 295,6 308,14" fill="none" stroke="rgba(255,65,214,0.6)"/>
+        <polyline class="bolt-branch" points="360,22 380,32 395,24" fill="none" stroke="rgba(113,83,255,0.7)"/>
+        <polyline class="bolt-branch" points="440,19 452,9 465,17" fill="none" stroke="rgba(36,215,255,0.6)"/>
+        <polyline class="bolt-branch" points="520,25 545,34 560,28" fill="none" stroke="rgba(113,83,255,0.7)"/>
+        <polyline class="bolt-branch" points="600,17 610,6 625,14" fill="none" stroke="rgba(255,65,214,0.6)"/>
+        <polyline class="bolt-branch" points="680,23 700,33 712,25" fill="none" stroke="rgba(36,215,255,0.7)"/>
+        <polyline class="bolt-branch" points="760,20 772,10 785,18" fill="none" stroke="rgba(113,83,255,0.6)"/>
+        <polyline class="bolt-branch" points="840,18 855,8 870,16" fill="none" stroke="rgba(36,215,255,0.7)"/>
+        <polyline class="bolt-branch" points="920,24 940,34 955,26" fill="none" stroke="rgba(255,65,214,0.6)"/>
+        <polyline class="bolt-branch" points="1000,16 1012,6 1025,14" fill="none" stroke="rgba(113,83,255,0.7)"/>
+        <polyline class="bolt-branch" points="1080,21 1098,31 1110,23" fill="none" stroke="rgba(36,215,255,0.6)"/>
+        <polyline class="bolt-branch" points="1160,19 1172,9 1185,17" fill="none" stroke="rgba(255,65,214,0.7)"/>
+        <linearGradient id="boltGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="rgba(36,215,255,0)"/>
+          <stop offset="15%" stop-color="rgba(36,215,255,0.9)"/>
+          <stop offset="50%" stop-color="rgba(113,83,255,1)"/>
+          <stop offset="85%" stop-color="rgba(36,215,255,0.9)"/>
+          <stop offset="100%" stop-color="rgba(36,215,255,0)"/>
+        </linearGradient>
+      </svg>
+
+    </div>
 
     <section id="precios">
       <h2 class="section-title reveal">Planes <span class="gradient">flexibles</span></h2>
