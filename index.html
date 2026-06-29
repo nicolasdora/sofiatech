@@ -1183,15 +1183,64 @@
       .donut-wrapper { width: 110px; height: 110px; }
       .donut { width: 110px; height: 110px; }
       .donut-center { width: 70px; height: 70px; font-size: 18px; }
+      .pillars { gap: 12px; }
+      .pillar { padding: 16px; min-height: 130px; }
     }
 
+    /* GPU acceleration for mobile */
     @media (max-width: 600px) {
+      .hero, .dashboard, .benefits, .steps, .pricing {
+        transform: translateZ(0);
+        will-change: transform;
+      }
+      .bar span {
+        animation: none;
+      }
+
+      header > .btn { display: none; }
       .hero h2 { font-size: 32px; }
       .hero p { font-size: 16px; }
       .actions { flex-direction: column; }
-      .btn { width: 100%; }
+      .actions .btn { width: 100%; }
       .cards, .charts, .pillars { grid-template-columns: 1fr; }
       .dash-head { flex-direction: column; gap: 6px; }
+      .hero { gap: 20px; }
+
+      /* Disable heavy animations for mobile fluidity */
+      .scanline-overlay { display: none; }
+      .noise-overlay { display: none; }
+      .cursor-glow { display: none; }
+      .orb { animation: none !important; opacity: 0.25; }
+      .particle { animation: none; opacity: 0.3; }
+      .aurora-beam { animation: none; }
+      .hero-shape { animation: none; opacity: 0.3; }
+
+      /* Reduce blur for performance */
+      .pillar, .box, .card, .chart, .donut-wrapper, .ticker-item {
+        backdrop-filter: blur(4px);
+        -webkit-backdrop-filter: blur(4px);
+      }
+
+      /* Simpler transitions */
+      .reveal, .reveal-left, .reveal-right, .reveal-scale {
+        transition-duration: 0.5s;
+      }
+
+      /* Disable glow effects */
+      .price.featured { animation: none; }
+      .dashboard { animation: none; }
+      .step-num { animation: none; }
+      .step-num::after { animation: none; }
+      .step-radar { animation: none; display: none; }
+      .progress-bar-animated::after { animation: none; }
+      .spark-bar { animation: none; }
+      .donut-ring { animation: none; }
+
+      /* Faster stagger on mobile */
+      .stagger-children .reveal:nth-child(1) { transition-delay: 0ms; }
+      .stagger-children .reveal:nth-child(2) { transition-delay: 50ms; }
+      .stagger-children .reveal:nth-child(3) { transition-delay: 100ms; }
+      .stagger-children .reveal:nth-child(4) { transition-delay: 150ms; }
     }
 
     /* ==================== SCANLINE EFFECT ==================== */
@@ -2017,6 +2066,7 @@
     // ==================== PARTICLES ====================
     (function() {
       try {
+        if (window.matchMedia('(max-width: 600px)').matches) return;
         const container = document.getElementById('particles');
         if (!container) return;
         const count = 50;
@@ -2102,6 +2152,7 @@
     // ==================== PARALLAX ORBS ON MOUSE ====================
     (function() {
       try {
+        if (window.matchMedia('(max-width: 600px)').matches) return;
         const orbs = document.querySelectorAll('.orb');
         document.addEventListener('mousemove', function(e) {
           const x = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -2117,6 +2168,7 @@
     // ==================== CURSOR GLOW ====================
     (function() {
       try {
+        if (window.matchMedia('(max-width: 600px)').matches) return;
         var glow = document.getElementById('cursorGlow');
         if (!glow) return;
         var mx = 0, my = 0, gx = 0, gy = 0;
