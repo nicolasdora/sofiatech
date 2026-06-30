@@ -1236,7 +1236,7 @@
       .step-radar { animation: none; display: none; }
       .progress-bar-animated::after { animation: none; }
       .spark-bar { animation: none; }
-      .donut-ring { animation: none; }
+      .donut-ring { /* keep animated on mobile */ }
 
       /* Faster stagger on mobile */
       .stagger-children .reveal:nth-child(1) { transition-delay: 0ms; }
