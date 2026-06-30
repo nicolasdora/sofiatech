@@ -429,7 +429,7 @@
     /* ==================== HERO ==================== */
     .hero {
       display: grid;
-      grid-template-columns: 1fr 1.2fr;
+      grid-template-columns: 1.4fr 1.2fr;
       gap: 42px;
       align-items: stretch;
       position: relative;
@@ -488,7 +488,8 @@
     /* ==================== PILLARS ==================== */
     .pillars {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-rows: 1fr;
       gap: 18px;
       margin-top: 24px;
     }
